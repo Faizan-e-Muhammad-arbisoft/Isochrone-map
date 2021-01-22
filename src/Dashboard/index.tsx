@@ -1,10 +1,10 @@
-import React from "react";
-import Map from "components/Map";
+import React from 'react';
+import MapContainer from 'components/Map/containers';
 
 function Dashboard(props: any) {
   return (
     <div className="dashboard">
-      <Map />
+      <MapContainer />
     </div>
   );
 }

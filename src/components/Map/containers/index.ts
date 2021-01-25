@@ -15,7 +15,8 @@ const mapStateToProps = (state: RootStore) => {
 
 const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
-    fetchDataHandler: () => dispatch<any>(getData()),
+    fetchDataHandler: (profile: string, lng: number, lat: number, minutes: number) =>
+      dispatch<any>(getData(profile, lng, lat, minutes)),
   };
 };
 

@@ -1,5 +1,8 @@
 export const initialStateData = {
   loading: false,
-  data: [] as any,
+  data: {
+    type: 'FeatureCollection',
+    features: [],
+  },
   error: false,
 };

@@ -1,7 +1,7 @@
 import React, { useRef, useState, useCallback } from 'react';
 import ReactMapGL, { Marker, FlyToInterpolator, Source, Layer } from 'react-map-gl';
 import { isoLayer } from 'components/Map/layers';
-import { Button, Form, Col, Row, ToggleButton, ToggleButtonGroup } from 'react-bootstrap';
+import { Button, Form, Col } from 'react-bootstrap';
 import { MapContainerWrapper } from 'components/Map/Map.styles';
 import image from 'media/images/pin.png';
 
@@ -12,7 +12,7 @@ const Map = (props: any) => {
 
   // Component States
   const [userLocation, setUserLocation]: any | null = useState(null);
-  const [travelMode, setTravelMode] = useState('walking');
+  const [travelMode, setTravelMode]: any | null = useState(null);
   const [viewport, setViewport] = useState({
     width: '100%',
     height: '100%',
@@ -47,7 +47,9 @@ const Map = (props: any) => {
     });
   };
 
-  const travelModeChangeHandler = (val: any) => setTravelMode(val);
+  const travelModeChangeHandler = (val: any) => {
+    setTravelMode(val.target.value);
+  };
 
   const fetchDataClickHandler = (e: any) => {
     e.preventDefault();
@@ -71,28 +73,45 @@ const Map = (props: any) => {
 
           {/* Isochrone api form */}
           <Form onSubmit={(e) => fetchDataClickHandler(e)}>
-            <Form.Group as={Row} controlId="minutes">
-              <Form.Label column sm={2}>
-                Duration in minutes
-              </Form.Label>
-              <Col sm={2}>
-                <Form.Control type="number" placeholder="10" ref={inputRef} />
+            <Form.Group>
+              <Form.Label>Duration in minutes</Form.Label>
+              <Col xs={1}>
+                <Form.Control type="number" defaultValue={10} ref={inputRef} />
               </Col>
             </Form.Group>
-            <ToggleButtonGroup
-              type="radio"
-              name="travelModeRadio"
-              defaultValue={travelMode}
-              onChange={travelModeChangeHandler}
-            >
-              <ToggleButton value={'walking'}>Walking</ToggleButton>
-              <ToggleButton value={'cycling'}>Cycling</ToggleButton>
-              <ToggleButton value={'driving'}>Driving</ToggleButton>
-            </ToggleButtonGroup>
-            <Form.Group as={Row}>
-              <Col sm={{ span: 5, offset: 0 }}>
-                <Button type="submit">Isochrone Api</Button>
-              </Col>
+            <Form.Group controlId="travelModeRadio">
+              <Form.Check
+                inline
+                type="radio"
+                label="Walking"
+                id="walkingRadio"
+                value="walking"
+                name="radio"
+                onChange={travelModeChangeHandler}
+              />
+              <Form.Check
+                inline
+                type="radio"
+                label="Cycling"
+                id="cyclingRadio"
+                value="cycling"
+                name="radio"
+                onChange={travelModeChangeHandler}
+              />
+              <Form.Check
+                inline
+                type="radio"
+                label="Driving"
+                id="drivingRadio"
+                value="driving"
+                name="radio"
+                onChange={travelModeChangeHandler}
+              />
+            </Form.Group>
+            <Form.Group>
+              <Button type="submit" disabled={userLocation === null || travelMode === null}>
+                Isochrone Api
+              </Button>
             </Form.Group>
           </Form>
 
